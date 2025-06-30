@@ -1,27 +1,16 @@
 pipeline{
- agent any
- tools{
- maven 'Maven 3.9.9'
- }
+ agent none
  stages{
- stage('build'){
- steps{
- echo 'compile maven app'
- sh 'mvn compile'
+  stage('build'){
+   agent {
+    docker {
+      image 'maven:3.9.6-eclipse-temurin-17-alpine'
+    }
+   }
+   steps{
+    echo 'compile maven app'
+    sh 'mvn compile'
+   }
+  }
  }
- }
- stage('test'){
- steps{
- echo 'test maven app'
- sh 'mvn clean test'
- }
- }
- stage('package'){
- steps{
- echo 'package maven app'
- sh 'mvn package -DskipTests'
- }
- }
- }
-
 }
